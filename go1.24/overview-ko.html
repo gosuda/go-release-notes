@@ -17,6 +17,7 @@
         padding: 0;
         font-family: Helvetica, "Noto Color Emoji", -apple-system,
           "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        word-break: keep-all;
       }
 
       body {
@@ -221,12 +222,12 @@
         <div class="spec-card">
           <div class="icon">⚡️</div>
           <div class="title">성능 향상</div>
-          <div class="subtitle">벤치마크에서 CPU 오버헤드 2~3% 감소했어요.</div>
+          <div class="subtitle">벤치마크에서 CPU 오버헤드가 2~3% 감소했어요.</div>
         </div>
 
         <div class="spec-card">
           <div class="icon">🔒</div>
-          <div class="title">Post-Quantum Crypto</div>
+          <div class="title">양자 내성 암호화</div>
           <div class="subtitle">
             새로운 `crypto/mlkem` 패키지에서 ML-KEM-768 및 ML-KEM-1024를
             구현했어요.
@@ -243,7 +244,7 @@
           <div class="icon">🗺️</div>
           <div class="title">새로운 Swiss Table Map</div>
           <div class="subtitle">
-            더 나은 성능을 위해 향상된 `map` 구현을 했어요.
+            더 나은 성능을 위해 향상된 `map` 구현을 사용해요.
           </div>
         </div>
 
@@ -263,7 +264,7 @@
 
         <div class="spec-card">
           <div class="icon">🧹</div>
-          <div class="title">런타임 정리</div>
+          <div class="title">런타임 정리자 추가</div>
           <div class="subtitle">
             `SetFinalizer`를 대체하는 새로운 `AddCleanup` 함수가 추가됐어요.
           </div>
@@ -279,7 +280,7 @@
         <div class="spec-card wide">
           <div class="blue-text">Tool Directives in `go.mod`</div>
           <div class="subtitle">
-            `tool` directives를 통해 더 나은 실행 파일 종속성 추적을 할 수
+            `tool` directives를 통해 더 나은 툴 종속성 추적을 할 수
             있어요.
           </div>
         </div>
@@ -287,7 +288,7 @@
         <div class="spec-card wide">
           <div class="blue-text">Directory-Limited Access</div>
           <div class="subtitle">
-            제어된 파일 시스템 작업을 위한 새로운 `os.Root` 타입이 생겼어요.
+            제한된 파일 시스템 작업을 위한 새로운 `os.Root` 타입이 생겼어요.
           </div>
         </div>
 
@@ -304,15 +305,15 @@
           <div class="icon">📦</div>
           <div class="title">빌드 캐시</div>
           <div class="subtitle">
-            `go run` 실행 파일이 이제 더 빠른 실행을 위해 캐시돼요.
+            `go run` 실행 파일이 이제 더 빠른 실행을 위해 캐시 되어요.
           </div>
         </div>
 
         <div class="spec-card wide">
-          <div class="title">Cgo 성능</div>
+          <div class="title">Cgo 성능 개선</div>
           <div class="subtitle">
-            더 나은 성능을 위한 새로운 주석 `#cgo noescape` 및 `#cgo
-            nocallback`이 추가됐어요.
+            더 나은 성능을 위한 새로운 주석 `#cgo noescape` 및 `#cgo nocallback`이
+            추가됐어요.
           </div>
         </div>
 
