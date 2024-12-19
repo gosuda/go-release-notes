@@ -15,7 +15,8 @@
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: Helvetica, "Noto Color Emoji", Arial, sans-serif;
+        font-family: Helvetica, "Noto Color Emoji", -apple-system,
+          "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
       }
 
       body {
@@ -50,7 +51,13 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+      .spec-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
       }
 
       .spec-card.wide {
@@ -63,7 +70,9 @@
         justify-content: center;
         align-items: center;
         padding: 40px;
-        background: #1d1d1f;
+        background: linear-gradient(135deg, #1d1d1f, #303032);
+        color: white;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
       }
 
       .number {
@@ -72,6 +81,9 @@
         color: #0066cc;
         margin-bottom: 8px;
         letter-spacing: -0.5px;
+        background: linear-gradient(to right, #0066cc, #69b4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
 
       .blue-text {
@@ -79,6 +91,9 @@
         font-size: 32px;
         font-weight: 600;
         letter-spacing: -0.5px;
+        background: linear-gradient(to right, #69b4ff, #0066cc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
 
       .title {
