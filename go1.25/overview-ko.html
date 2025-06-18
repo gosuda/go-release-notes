@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Go 1.25 Overview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Helvetica, "Noto Color Emoji", -apple-system,
+          "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        word-break: keep-all;
+      }
+
+      body {
+        background: #f5f5f7;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .specs-grid {
+        display: grid;
+        gap: 20px;
+        /* Default to 4 columns */
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .spec-card {
+        background: white;
+        border-radius: 18px;
+        padding: 25px;
+        position: relative;
+        overflow: hidden;
+        min-height: 140px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+      .spec-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .spec-card.wide {
+        grid-column: span 2;
+      }
+      
+      .spec-card.center {
+        /* 2-column dark card */
+        grid-column: span 2; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background: linear-gradient(135deg, #1d1d1f, #303032);
+        color: white;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .blue-text {
+        color: #69b4ff;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        background: linear-gradient(to right, #69b4ff, #0066cc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 5px;
+      }
+
+      .title {
+        font-size: 17px;
+        color: #1d1d1f;
+        margin-top: 5px;
+        line-height: 1.3;
+      }
+
+      .subtitle {
+        font-size: 15px;
+        color: #86868b;
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+
+      .icon {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+
+      .go-chip {
+        text-align: center;
+      }
+
+      .go-text {
+        font-size: 42px;
+        font-weight: 600;
+        color: white;
+        letter-spacing: -0.5px;
+        margin-bottom: 5px;
+      }
+
+      .pro-text {
+        font-size: 32px;
+        color: #69b4ff;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+      }
+      
+      @media (max-width: 1024px) {
+        .specs-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .spec-card.wide,
+        .spec-card.center {
+          grid-column: span 2;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .specs-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .spec-card.wide,
+        .spec-card.center {
+          grid-column: span 1;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 12px;
+        }
+        .spec-card {
+          min-height: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="specs-grid">
+        
+        <div class="spec-card wide">
+          <div class="icon">♻️</div>
+          <div class="title">실험적인 새 가비지 컬렉터</div>
+          <div class="subtitle">작은 객체 처리 성능을 높여 GC 오버헤드를 최대 40% 줄일 것으로 기대돼요.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">🐳</div>
+          <div class="title">컨테이너 인식 GOMAXPROCS</div>
+          <div class="subtitle">리눅스 컨테이너의 CPU 제한을 고려해 GOMAXPROCS 기본값을 자동 설정해요.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">📚</div>
+          <div class="title">스택 할당 개선</div>
+          <div class="subtitle">슬라이스를 스택에 할당하는 경우가 늘어 성능이 향상되었어요.</div>
+        </div>
+
+        <div class="spec-card wide">
+          <div class="icon">📸</div>
+          <div class="title">Flight Recorder</div>
+          <div class="subtitle">`runtime/trace`에 추가되어 프로그램의 특정 시점 실행을 스냅샷으로 남겨요.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">🚫</div>
+          <div class="title">엄격한 nil 포인터 검사</div>
+          <div class="subtitle">에러 확인 전 결과값을 사용하면 이제 패닉이 발생하여 코드 안정성이 높아졌어요.</div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">⚙️</div>
+          <div class="title">DWARF 5 디버그 정보</div>
+          <div class="subtitle">바이너리 크기를 줄이고 대규모 프로젝트의 링크 시간을 단축했어요.</div>
+        </div>
+
+        <div class="spec-card wide">
+          <div class="blue-text">Experimental encoding/json/v2</div>
+          <div class="subtitle">
+            기존 `encoding/json`을 대폭 개정한 새로운 패키지로, 특히 디코딩 성능이 크게 향상되었어요.
+          </div>
+        </div>
+
+        <div class="spec-card center">
+          <div class="go-chip">
+            <div class="go-text">Go 1.25</div>
+            <div class="pro-text">2025년 8월</div>
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🗺️</div>
+          <div class="title">리눅스 VMA 이름</div>
+          <div class="subtitle">익명 메모리 매핑에 용도를 표시해서 디버깅이 더 쉬워졌어요.</div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🔬</div>
+          <div class="title">C 메모리 누수 감지</div>
+          <div class="subtitle">`go build -asan` 사용 시 C 메모리 누수 감지가 기본으로 활성화되었어요.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">🧹</div>
+          <div class="title">병렬 Cleanup 실행</div>
+          <div class="subtitle">`AddCleanup`으로 예약된 함수들이 이제 병렬로 실행돼요.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">📦</div>
+          <div class="title">적은 수의 사전 빌드 바이너리</div>
+          <div class="subtitle">이제 `go tool`이 필요에 따라 도구를 빌드하여 설치 크기가 줄었어요.</div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🔑</div>
+          <div class="title">TLS 연결 정보 노출</div>
+          <div class="subtitle">새로운 `ConnectionState.CurveID` 필드로 키 교환 메커니즘을 확인할 수 있어요.</div>
+        </div>
+        
+        <div class="spec-card wide">
+          <div class="blue-text">`go.mod ignore` 지시어</div>
+          <div class="subtitle">
+            `go` 명령어가 특정 디렉터리를 무시하도록 설정하는 새로운 지시어가 추가되었어요.
+          </div>
+        </div>
+        
+         <div class="spec-card">
+            <div class="icon">📜</div>
+            <div class="title">언어 사양 변경</div>
+            <div class="subtitle">`core types` 개념이 제거되고 더 명확한 설명으로 대체되었어요.</div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

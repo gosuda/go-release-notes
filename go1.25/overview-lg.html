@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Go 1.25 Overview - Liquid Glass</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Helvetica, "Noto Color Emoji", -apple-system,
+          "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        word-break: keep-all;
+      }
+
+      body {
+        background-color: #0d253f;
+        background-image: 
+          radial-gradient(ellipse 80% 80% at 10% 20%, hsla(180, 55%, 60%, 0.4), transparent),
+          radial-gradient(ellipse 60% 70% at 95% 90%, hsla(210, 65%, 55%, 0.3), transparent);
+        background-repeat: no-repeat;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .specs-grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .spec-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-radius: 18px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        min-height: 140px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+      .spec-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 16px 40px 0 rgba(0, 0, 0, 0.25);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      .spec-card.wide {
+        grid-column: span 2;
+      }
+      
+      .spec-card.center {
+        grid-column: span 2; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background: rgba(20, 20, 30, 0.3);
+        border-color: rgba(255, 255, 255, 0.15);
+        color: white;
+      }
+
+      .blue-text {
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        text-shadow: 0 0 10px rgba(105, 180, 255, 0.5);
+        color: #e0efff;
+        margin-bottom: 5px;
+      }
+
+      .title {
+        font-size: 17px;
+        color: #ffffff;
+        font-weight: 600;
+        margin-top: 5px;
+        line-height: 1.3;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+      }
+
+      .subtitle {
+        font-size: 15px;
+        color: #d0e0f0;
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+      
+      .spec-card.center .pro-text,
+      .spec-card.center .go-text {
+         text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+      }
+
+      .icon {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+
+      .go-chip {
+        text-align: center;
+      }
+
+      .go-text {
+        font-size: 42px;
+        font-weight: 600;
+        color: white;
+        letter-spacing: -0.5px;
+        margin-bottom: 5px;
+      }
+
+      .pro-text {
+        font-size: 32px;
+        color: #69b4ff;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+      }
+      
+      @media (max-width: 1024px) {
+        .specs-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .spec-card.wide,
+        .spec-card.center {
+          grid-column: span 2;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .specs-grid {
+          grid-template-columns: 1fr;
+        }
+        .spec-card.wide,
+        .spec-card.center {
+          grid-column: span 1;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="specs-grid">
+        
+        <div class="spec-card wide">
+          <div class="icon">♻️</div>
+          <div class="title">Experimental New Garbage Collector</div>
+          <div class="subtitle">Expected to reduce GC overhead by up to 40% by improving small object handling.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">🐳</div>
+          <div class="title">Container-Aware GOMAXPROCS</div>
+          <div class="subtitle">Automatically sets default GOMAXPROCS based on Linux container CPU limits.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">📚</div>
+          <div class="title">Improved Stack Allocation</div>
+          <div class="subtitle">Performance is improved as slices are more frequently allocated on the stack.</div>
+        </div>
+
+        <div class="spec-card wide">
+          <div class="icon">📸</div>
+          <div class="title">Flight Recorder</div>
+          <div class="subtitle">Added to `runtime/trace`, it snapshots program execution at specific moments.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">🚫</div>
+          <div class="title">Stricter Nil Pointer Checks</div>
+          <div class="subtitle">Using a result before checking the error now causes a panic, improving code stability.</div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">⚙️</div>
+          <div class="title">DWARF 5 Debug Info</div>
+          <div class="subtitle">Reduces binary size and shortens link times for large projects.</div>
+        </div>
+
+        <div class="spec-card wide">
+          <div class="blue-text">Experimental encoding/json/v2</div>
+          <div class="subtitle">
+            A major revision of the existing `encoding/json` package, with significantly improved decoding performance.
+          </div>
+        </div>
+
+        <div class="spec-card center">
+          <div class="go-chip">
+            <div class="go-text">Go 1.25</div>
+            <div class="pro-text">August 2025</div>
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🗺️</div>
+          <div class="title">Linux VMA Names</div>
+          <div class="subtitle">Makes debugging easier by annotating anonymous memory mappings with their purpose.</div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🔬</div>
+          <div class="title">C Memory Leak Detection</div>
+          <div class="subtitle">Enabled by default when using `go build -asan`.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">🧹</div>
+          <div class="title">Parallel Cleanup Execution</div>
+          <div class="subtitle">Functions scheduled with `AddCleanup` now run in parallel.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">📦</div>
+          <div class="title">Fewer Pre-built Binaries</div>
+          <div class="subtitle">The `go tool` now builds tools as needed, reducing installation size.</div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🔑</div>
+          <div class="title">TLS Connection Info Exposure</div>
+          <div class="subtitle">New `ConnectionState.CurveID` field exposes the key exchange mechanism.</div>
+        </div>
+        
+        <div class="spec-card wide">
+          <div class="blue-text">`go.mod ignore` Directive</div>
+          <div class="subtitle">
+            A new directive allows setting directories for the `go` command to ignore.
+          </div>
+        </div>
+        
+         <div class="spec-card">
+            <div class="icon">📜</div>
+            <div class="title">Language Specification Change</div>
+            <div class="subtitle">The concept of `core types` has been removed and replaced with clearer prose.</div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

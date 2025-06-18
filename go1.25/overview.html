@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Go 1.25 Overview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Helvetica, "Noto Color Emoji", -apple-system,
+          "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+        word-break: keep-all;
+      }
+
+      body {
+        background: #f5f5f7;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .specs-grid {
+        display: grid;
+        gap: 20px;
+        /* Default to 4 columns */
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .spec-card {
+        background: white;
+        border-radius: 18px;
+        padding: 25px;
+        position: relative;
+        overflow: hidden;
+        height: 170px; /* Adjusted for uniform height */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+      .spec-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .spec-card.wide {
+        grid-column: span 2;
+      }
+      
+      .spec-card.center {
+        /* 2-column dark card */
+        grid-column: span 2; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background: linear-gradient(135deg, #1d1d1f, #303032);
+        color: white;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .blue-text {
+        color: #69b4ff;
+        font-size: 28px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        background: linear-gradient(to right, #69b4ff, #0066cc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 5px;
+      }
+
+      .title {
+        font-size: 17px;
+        color: #1d1d1f;
+        margin-top: 5px;
+        line-height: 1.3;
+      }
+
+      .subtitle {
+        font-size: 15px;
+        color: #86868b;
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+
+      .icon {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+
+      .go-chip {
+        text-align: center;
+      }
+
+      .go-text {
+        font-size: 42px;
+        font-weight: 600;
+        color: white;
+        letter-spacing: -0.5px;
+        margin-bottom: 5px;
+      }
+
+      .pro-text {
+        font-size: 32px;
+        color: #69b4ff;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+      }
+      
+      @media (max-width: 1024px) {
+        .specs-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .spec-card.wide,
+        .spec-card.center {
+          grid-column: span 2;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .specs-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .spec-card.wide,
+        .spec-card.center {
+          grid-column: span 1;
+        }
+        /* Allow cards to have natural height in single-column layout */
+        .spec-card {
+          height: auto;
+          min-height: 140px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="specs-grid">
+        
+        <div class="spec-card wide">
+          <div class="icon">♻️</div>
+          <div class="title">Experimental New Garbage Collector</div>
+          <div class="subtitle">Expected to reduce GC overhead by up to 40% by improving small object handling.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">🐳</div>
+          <div class="title">Container-Aware GOMAXPROCS</div>
+          <div class="subtitle">Automatically sets default GOMAXPROCS based on Linux container CPU limits.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">📚</div>
+          <div class="title">Improved Stack Allocation</div>
+          <div class="subtitle">Performance is improved as slices are more frequently allocated on the stack.</div>
+        </div>
+
+        <div class="spec-card wide">
+          <div class="icon">📸</div>
+          <div class="title">Flight Recorder</div>
+          <div class="subtitle">Added to `runtime/trace`, it snapshots program execution at specific moments.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">🚫</div>
+          <div class="title">Stricter Nil Pointer Checks</div>
+          <div class="subtitle">Using a result before checking the error now causes a panic, improving code stability.</div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">⚙️</div>
+          <div class="title">DWARF 5 Debug Info</div>
+          <div class="subtitle">Reduces binary size and shortens link times for large projects.</div>
+        </div>
+
+        <div class="spec-card wide">
+          <div class="blue-text">Experimental encoding/json/v2</div>
+          <div class="subtitle">
+            A major revision of the existing `encoding/json` package, with significantly improved decoding performance.
+          </div>
+        </div>
+
+        <div class="spec-card center">
+          <div class="go-chip">
+            <div class="go-text">Go 1.25</div>
+            <div class="pro-text">August 2025</div>
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🗺️</div>
+          <div class="title">Linux VMA Names</div>
+          <div class="subtitle">Makes debugging easier by annotating anonymous memory mappings with their purpose.</div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🔬</div>
+          <div class="title">C Memory Leak Detection</div>
+          <div class="subtitle">Enabled by default when using `go build -asan`.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">🧹</div>
+          <div class="title">Parallel Cleanup Execution</div>
+          <div class="subtitle">Functions scheduled with `AddCleanup` now run in parallel.</div>
+        </div>
+        
+        <div class="spec-card">
+          <div class="icon">📦</div>
+          <div class="title">Fewer Pre-built Binaries</div>
+          <div class="subtitle">The `go tool` now builds tools as needed, reducing installation size.</div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🔑</div>
+          <div class="title">TLS Connection Info Exposure</div>
+          <div class="subtitle">New `ConnectionState.CurveID` field exposes the key exchange mechanism.</div>
+        </div>
+        
+        <div class="spec-card wide">
+          <div class="blue-text">`go.mod ignore` Directive</div>
+          <div class="subtitle">
+            A new directive allows setting directories for the `go` command to ignore.
+          </div>
+        </div>
+        
+         <div class="spec-card">
+            <div class="icon">📜</div>
+            <div class="title">Language Specification Change</div>
+            <div class="subtitle">The concept of `core types` has been removed and replaced with clearer prose.</div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>
