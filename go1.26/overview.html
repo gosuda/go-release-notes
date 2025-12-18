@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Go 1.26 Overview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Helvetica, "Noto Color Emoji", -apple-system,
+          "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      }
+
+      body {
+        background: #f5f5f7;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .spec-card {
+        background: white;
+        border-radius: 18px;
+        padding: 25px;
+        position: relative;
+        overflow: hidden;
+        min-height: 140px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+      .spec-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .spec-card.wide {
+        grid-column: span 2;
+      }
+
+      .spec-card.center {
+        grid-column: span 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+        background: linear-gradient(135deg, #1d1d1f, #303032);
+        color: white;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      }
+
+      .number {
+        font-size: 36px;
+        font-weight: bold;
+        color: #0066cc;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
+        background: linear-gradient(to right, #0066cc, #69b4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .blue-text {
+        color: #69b4ff;
+        font-size: 32px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+        background: linear-gradient(to right, #69b4ff, #0066cc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .title {
+        font-size: 17px;
+        color: #1d1d1f;
+        margin-top: 5px;
+        line-height: 1.3;
+      }
+
+      .subtitle {
+        font-size: 15px;
+        color: #86868b;
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+
+      .up-to {
+        font-size: 13px;
+        color: #86868b;
+        margin-bottom: 4px;
+        font-weight: 500;
+      }
+
+      .icon {
+        font-size: 28px;
+        margin-bottom: 12px;
+      }
+
+      .displays {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 20px;
+      }
+
+      .display {
+        width: 45px;
+        height: 35px;
+        border: 2px solid #1d1d1f;
+        position: relative;
+      }
+
+      .display::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        width: 2px;
+        height: 15px;
+        background: #1d1d1f;
+        transform: translateX(-50%);
+      }
+
+      .go-chip {
+        text-align: center;
+      }
+
+      .go-text {
+        font-size: 42px;
+        font-weight: 600;
+        color: white;
+        letter-spacing: -0.5px;
+        margin-bottom: 5px;
+      }
+
+      .pro-text {
+        font-size: 32px;
+        color: #69b4ff;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+      }
+
+      @media (max-width: 1024px) {
+        .specs-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 15px;
+        }
+
+        .spec-card.wide,
+        .spec-card.center {
+          grid-column: span 3;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .specs-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .spec-card.wide,
+        .spec-card.center {
+          grid-column: span 2;
+        }
+
+        .spec-card {
+          min-height: 130px;
+          padding: 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .specs-grid {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .spec-card.wide,
+        .spec-card.center {
+          grid-column: span 1;
+        }
+
+        .container {
+          padding: 12px;
+        }
+
+        .spec-card {
+          min-height: 120px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="specs-grid">
+        <div class="spec-card">
+          <div class="icon">🚀</div>
+          <div class="title">Green Tea GC Enabled by Default</div>
+          <div class="subtitle">
+            Optimized small object scanning reduces GC overhead by 10–40%.
+            Leverages vector instructions on modern CPUs for maximum efficiency.
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🔐</div>
+          <div class="title">New crypto/hpke Package</div>
+          <div class="subtitle">
+            Full implementation of RFC 9180 Hybrid Public Key Encryption.
+            Supports ML-KEM for Post-Quantum Cryptography and hybrid key
+            exchanges.
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">✨</div>
+          <div class="title">new(Expression) Support</div>
+          <div class="subtitle">
+            The built-in new function now accepts initial value expressions,
+            simplifying the initialization of pointer-based optional fields.
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🏎️</div>
+          <div class="title">Experimental simd/archsimd</div>
+          <div class="subtitle">
+            Directly access architecture-specific SIMD operations like AVX2 and
+            AVX512 on AMD64 for high-performance computation.
+          </div>
+        </div>
+
+        <div class="spec-card center">
+          <div class="go-chip">
+            <div class="go-text">Go 1.26</div>
+            <div class="pro-text">February 2026</div>
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🛡️</div>
+          <div class="title">Experimental runtime/secret</div>
+          <div class="subtitle">
+            Provides `secret.Do` to securely erase registers and stack memory
+            used for sensitive temporary storage immediately upon function
+            return.
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🔗</div>
+          <div class="title">Faster Cgo & Malloc</div>
+          <div class="subtitle">
+            Cgo baseline overhead reduced by 30%. Size-specialized memory
+            allocation routines improve performance for small objects.
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🔍</div>
+          <div class="title">Goroutine Leak Profiles</div>
+          <div class="subtitle">
+            New experimental profile to identify goroutines blocked on
+            unreachable concurrency primitives like channels and mutexes.
+          </div>
+        </div>
+
+        <div class="spec-card wide">
+          <div class="blue-text">Standard Library Iterators</div>
+          <div class="subtitle">
+            Enhanced `reflect` package methods now return Go 1.23 style
+            iterators for fields, methods, and function parameters.
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">📥</div>
+          <div class="title">Optimized io.ReadAll</div>
+          <div class="subtitle">
+            Achieves 2x speedup and 50% less memory usage by minimizing
+            intermediate allocations for large input buffers.
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">⚠️</div>
+          <div class="title">Safe Crypto Defaults</div>
+          <div class="subtitle">
+            Key generation functions now ignore custom random parameters to
+            enforce the use of cryptographically secure entropy.
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🛠️</div>
+          <div class="title">Enhanced go fix & pprof</div>
+          <div class="subtitle">
+            `go fix` now utilizes the analysis framework. `pprof` web UI now
+            defaults to the high-visibility Flame Graph view.
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🛑</div>
+          <div class="title">errors.AsType Function</div>
+          <div class="subtitle">
+            A faster, type-safe, and generic version of the `As` function,
+            making error handling more ergonomic for developers.
+          </div>
+        </div>
+
+        <div class="spec-card">
+          <div class="icon">🖼️</div>
+          <div class="title">Brand New image/jpeg</div>
+          <div class="subtitle">
+            Completely replaced JPEG encoder/decoder with a faster and more
+            accurate implementation for massive image processing workloads.
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
