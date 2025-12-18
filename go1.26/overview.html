@@ -220,38 +220,37 @@
       <div class="specs-grid">
         <div class="spec-card">
           <div class="icon">🚀</div>
-          <div class="title">Green Tea GC Enabled by Default</div>
+          <div class="title">Green Tea GC</div>
           <div class="subtitle">
-            Optimized small object scanning reduces GC overhead by 10–40%.
-            Leverages vector instructions on modern CPUs for maximum efficiency.
+            Reduces GC overhead by up to 40% using new CPU vector instructions
+            for small object scanning.
           </div>
         </div>
 
         <div class="spec-card">
           <div class="icon">🔐</div>
-          <div class="title">New crypto/hpke Package</div>
+          <div class="title">crypto/hpke</div>
           <div class="subtitle">
-            Full implementation of RFC 9180 Hybrid Public Key Encryption.
-            Supports ML-KEM for Post-Quantum Cryptography and hybrid key
-            exchanges.
+            Full RFC 9180 implementation with support for Post-Quantum
+            Cryptography (ML-KEM).
           </div>
         </div>
 
         <div class="spec-card">
           <div class="icon">✨</div>
-          <div class="title">new(Expression) Support</div>
+          <div class="title">new(Value) Support</div>
           <div class="subtitle">
-            The built-in new function now accepts initial value expressions,
-            simplifying the initialization of pointer-based optional fields.
+            The built-in `new` function now accepts initial values, simplifying
+            pointer-based field initialization.
           </div>
         </div>
 
         <div class="spec-card">
           <div class="icon">🏎️</div>
-          <div class="title">Experimental simd/archsimd</div>
+          <div class="title">simd/archsimd</div>
           <div class="subtitle">
-            Directly access architecture-specific SIMD operations like AVX2 and
-            AVX512 on AMD64 for high-performance computation.
+            Experimental direct access to architecture-specific SIMD like AVX2
+            and AVX512 on AMD64.
           </div>
         </div>
 
@@ -264,11 +263,10 @@
 
         <div class="spec-card">
           <div class="icon">🛡️</div>
-          <div class="title">Experimental runtime/secret</div>
+          <div class="title">runtime/secret</div>
           <div class="subtitle">
-            Provides `secret.Do` to securely erase registers and stack memory
-            used for sensitive temporary storage immediately upon function
-            return.
+            Introduces `secret.Do` to securely erase registers and stack memory
+            used for sensitive data.
           </div>
         </div>
 
@@ -276,34 +274,34 @@
           <div class="icon">🔗</div>
           <div class="title">Faster Cgo & Malloc</div>
           <div class="subtitle">
-            Cgo baseline overhead reduced by 30%. Size-specialized memory
-            allocation routines improve performance for small objects.
+            30% reduction in Cgo overhead and optimized memory routines for
+            small object allocation.
           </div>
         </div>
 
         <div class="spec-card">
           <div class="icon">🔍</div>
-          <div class="title">Goroutine Leak Profiles</div>
+          <div class="title">Leak Profiles</div>
           <div class="subtitle">
-            New experimental profile to identify goroutines blocked on
-            unreachable concurrency primitives like channels and mutexes.
+            New experimental profiles to identify goroutines blocked on
+            unreachable concurrency primitives.
           </div>
         </div>
 
         <div class="spec-card wide">
           <div class="blue-text">Standard Library Iterators</div>
           <div class="subtitle">
-            Enhanced `reflect` package methods now return Go 1.23 style
+            The `reflect` package now provides Go 1.23 style range-over-function
             iterators for fields, methods, and function parameters.
           </div>
         </div>
 
         <div class="spec-card">
           <div class="icon">📥</div>
-          <div class="title">Optimized io.ReadAll</div>
+          <div class="title">io.ReadAll Optimization</div>
           <div class="subtitle">
             Achieves 2x speedup and 50% less memory usage by minimizing
-            intermediate allocations for large input buffers.
+            intermediate buffer allocations.
           </div>
         </div>
 
@@ -311,35 +309,35 @@
           <div class="icon">⚠️</div>
           <div class="title">Safe Crypto Defaults</div>
           <div class="subtitle">
-            Key generation functions now ignore custom random parameters to
-            enforce the use of cryptographically secure entropy.
+            Key generation now ignores custom random parameters to enforce
+            cryptographically secure entropy.
           </div>
         </div>
 
         <div class="spec-card">
           <div class="icon">🛠️</div>
-          <div class="title">Enhanced go fix & pprof</div>
+          <div class="title">Dev Tools Update</div>
           <div class="subtitle">
-            `go fix` now utilizes the analysis framework. `pprof` web UI now
-            defaults to the high-visibility Flame Graph view.
+            Enhanced `go fix` analysis and updated `pprof` UI featuring Flame
+            Graphs as the default view.
           </div>
         </div>
 
         <div class="spec-card">
           <div class="icon">🛑</div>
-          <div class="title">errors.AsType Function</div>
+          <div class="title">errors.AsType</div>
           <div class="subtitle">
-            A faster, type-safe, and generic version of the `As` function,
-            making error handling more ergonomic for developers.
+            A faster, type-safe, and generic alternative to the traditional
+            `errors.As` function.
           </div>
         </div>
 
         <div class="spec-card">
           <div class="icon">🖼️</div>
-          <div class="title">Brand New image/jpeg</div>
+          <div class="title">image/jpeg Rewrite</div>
           <div class="subtitle">
-            Completely replaced JPEG encoder/decoder with a faster and more
-            accurate implementation for massive image processing workloads.
+            A completely rewritten JPEG encoder and decoder for faster and more
+            accurate image processing.
           </div>
         </div>
       </div>
