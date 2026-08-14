@@ -6,6 +6,10 @@ import { chromium } from "playwright";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const requestedTargets = process.argv.slice(2);
+const renderScale = Number(process.env.PNG_SCALE ?? 3);
+if (!Number.isInteger(renderScale) || renderScale < 1 || renderScale > 4) {
+  throw new Error("PNG_SCALE must be an integer from 1 to 4");
+}
 
 const mimeTypes = new Map([
   [".css", "text/css; charset=utf-8"],
@@ -126,7 +130,7 @@ try {
   for (const file of slideFiles) {
     const page = await browser.newPage({
       viewport: { width: 1200, height: 900 },
-      deviceScaleFactor: 1,
+      deviceScaleFactor: renderScale,
     });
     const browserErrors = [];
     page.on("console", (message) => {
@@ -195,7 +199,7 @@ try {
     });
     audits.push({ ...audit, file });
     console.log(
-      `Rendered ${relativeFile} -> ${relative(projectRoot, output)} (${audit.page.width}x${audit.page.height})`,
+      `Rendered ${relativeFile} -> ${relative(projectRoot, output)} (${audit.page.width * renderScale}x${audit.page.height * renderScale}, ${renderScale}x)`,
     );
     await page.close();
   }

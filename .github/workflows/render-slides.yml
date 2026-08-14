@@ -20,8 +20,12 @@ on:
       - "package-lock.json"
       - ".github/workflows/render-slides.yml"
 
+concurrency:
+  group: render-release-note-slides
+  cancel-in-progress: true
+
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   render:
@@ -46,8 +50,18 @@ jobs:
       - name: Render and validate slides
         run: npm run render
 
-      - name: Verify committed PNG files
-        run: git diff --exit-code -- go1.27/overview.png go1.27/overview-ko.png
+      - name: Commit rendered PNG files
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git add go1.27/overview.png go1.27/overview-ko.png
+          if git diff --cached --quiet; then
+            echo "Rendered PNG files are already current."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: Render Go 1.27 slides [skip ci]"
+          git push
 
       - name: Upload rendered slides
         uses: actions/upload-artifact@v4
